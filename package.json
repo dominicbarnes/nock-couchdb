@@ -1,0 +1,24 @@
+{
+  "name": "nock-couchdb",
+  "version": "0.0.0",
+  "description": "A mock CouchDB server for testing purposes",
+  "keywords": [
+    "mock",
+    "couchdb",
+    "nock",
+    "testing"
+  ],
+  "repository": "dominicbarnes/nock-couchdb",
+  "dependencies": {
+    "chance": "^0.7.1",
+    "defaults": "^1.0.0",
+    "nock": "^0.57.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "supertest": "^0.15.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  }
+}

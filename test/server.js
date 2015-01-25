@@ -11,4 +11,6 @@ describe('server', function () {
     var srv = mock.server({ url: 'http://myapp.iriscouch.com/' });
     assert.equal(srv.url(), 'http://myapp.iriscouch.com/');
   });
+
+  describe('1.6.1', require('./1.6.1/server'));
 });

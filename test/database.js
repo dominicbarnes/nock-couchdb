@@ -12,4 +12,6 @@ describe('database', function () {
   it('should store the name as a property', function () {
     assert.equal(database.name, 'test');
   });
+
+  describe('1.6.1', require('./1.6.1/database'));
 });

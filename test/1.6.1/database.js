@@ -1,8 +1,8 @@
 var assert = require('assert');
 var supertest = require('supertest');
-var mock = require('../../..');
+var mock = require('../..');
 
-describe('1.6.1', function () {
+module.exports = function () {
   var server = mock.server();
   var database = server.database('test');
   var request = supertest(database.url());
@@ -11,7 +11,7 @@ describe('1.6.1', function () {
     server.done();
   });
 
-  describe('database.info([data])', function () {
+  describe('.info([data])', function () {
     it('should mock the root endpoint', function (done) {
       database.info();
 
@@ -52,4 +52,4 @@ describe('1.6.1', function () {
         .end(done);
     });
   });
-});
+};

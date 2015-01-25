@@ -1,9 +1,9 @@
 var assert = require('assert');
 var supertest = require('supertest');
-var mock = require('../../..');
+var mock = require('../..');
 
-describe('1.6.1', function () {
-  describe('server.info()', function () {
+module.exports = function () {
+  describe('.info()', function () {
     var server = mock.server();
     var request = supertest(server.url());
 
@@ -29,4 +29,4 @@ describe('1.6.1', function () {
         .end(done);
     });
   });
-});
+};

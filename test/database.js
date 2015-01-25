@@ -2,30 +2,29 @@ var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('..');
 
-describe('database(name)', function () {
+describe('database', function () {
   var server = mock.server();
-  var db = server.database('test');
-  var request = supertest(server.base);
+  var database = server.database('test');
+  var request = supertest(database.url());
 
   afterEach(function () {
-    assert(server.done());
-    server.clean();
+    server.done();
   });
 
-  it('should store a reference to the server', function () {
-    assert.strictEqual(db.server, server);
+  it('should store some references', function () {
+    assert.strictEqual(database.server, server);
   });
 
   it('should store the name as a property', function () {
-    assert.equal(db.name, 'test');
+    assert.equal(database.name, 'test');
   });
 
   describe('database.info([data])', function () {
     it('should mock the root endpoint', function (done) {
-      db.info();
+      database.info();
 
       request
-        .get('test')
+        .get('')
         .expect(200)
         .expect(function (res) {
           var data = res.body;
@@ -45,13 +44,13 @@ describe('database(name)', function () {
     });
 
     it('should allow overriding some of the response', function (done) {
-      db.info({
+      database.info({
         data_size: 123456,
         doc_count: 10
       });
 
       request
-        .get('test')
+        .get('')
         .expect(200)
         .expect(function (res) {
           var data = res.body;

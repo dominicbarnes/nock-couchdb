@@ -11,7 +11,7 @@
   "repository": "dominicbarnes/nock-couchdb",
   "dependencies": {
     "chance": "^0.7.1",
-    "defaults": "^1.0.0",
+    "extend": "^2.0.0",
     "nock": "^0.57.0"
   },
   "devDependencies": {

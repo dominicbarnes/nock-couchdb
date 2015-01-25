@@ -2,48 +2,39 @@ var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('..');
 
-describe('server(url)', function () {
+describe('server', function () {
   it('should use a default url', function () {
     var srv = mock.server();
-    assert.equal(srv.base, 'http://localhost:5984/');
+    assert.equal(srv.url(), 'http://localhost:5984/');
   });
 
   it('should use a specified url', function () {
-    var srv = mock.server('http://myapp.iriscouch.com/');
-    assert.equal(srv.base, 'http://myapp.iriscouch.com/');
+    var srv = mock.server({ url: 'http://myapp.iriscouch.com/' });
+    assert.equal(srv.url(), 'http://myapp.iriscouch.com/');
   });
 
-  describe('server.info([version])', function () {
+  describe('server.info()', function () {
     var server = mock.server();
-    var request = supertest(server.base);
+    var request = supertest(server.url());
 
     afterEach(function () {
-      assert(server.done());
-      server.clean();
+      server.mock.done();
     });
 
     it('should mock the root endpoint', function (done) {
       server.info();
+      var version = server.options.version;
 
       request
         .get('')
         .expect(200)
-        .end(function (err, res) {
-          if (err) return done(err);
+        .expect('Cache-Control', 'must-revalidate')
+        .expect('Content-Length', /^\d+$/)
+        .expect('Date', server.options.date.toUTCString())
+        .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+        .expect(function (res) {
           assert.equal(res.body.couchdb, 'Welcome');
-          assert(/\d\.\d\.\d/.test(res.body.version));
-          done();
-        });
-    });
-
-    it('should set a custom version number', function (done) {
-      server.info('1.2.3');
-
-      request
-        .get('')
-        .expect(200, {
-          couchdb: 'Welcome',
-          version: '1.2.3'
+          assert.equal(res.body.version, version);
         })
         .end(done);
     });

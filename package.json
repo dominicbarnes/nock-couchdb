@@ -12,7 +12,8 @@
   "dependencies": {
     "chance": "^0.7.1",
     "extend": "^2.0.0",
-    "nock": "^0.57.0"
+    "nock": "^0.57.0",
+    "zeroes": "0.0.2"
   },
   "devDependencies": {
     "eslint": "^0.13.0",

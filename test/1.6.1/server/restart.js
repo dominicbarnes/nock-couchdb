@@ -1,6 +1,7 @@
 var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('../../..');
+var status = mock.status;
 
 module.exports = function () {
   var server = mock.server();
@@ -16,7 +17,7 @@ module.exports = function () {
 
     request
       .post('_restart')
-      .expect(202, { ok: true })
+      .expect(status.ACCEPTED, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
@@ -25,11 +26,11 @@ module.exports = function () {
   });
 
   it('should mock an authentication failure', function (done) {
-    server.restart({ error: 403 });
+    server.restart({ error: status.FORBIDDEN });
 
     request
       .post('_restart')
-      .expect(403, {
+      .expect(status.FORBIDDEN, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
       })
@@ -41,11 +42,11 @@ module.exports = function () {
   });
 
   it('should mock a content-type failure', function (done) {
-    server.restart({ error: 415 });
+    server.restart({ error: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
       .post('_restart')
-      .expect(415, {
+      .expect(status.UNSUPPORTED_MEDIA_TYPE, {
         error:  'bad_content_type',
         reason: 'Content-Type must be application/json'
       })

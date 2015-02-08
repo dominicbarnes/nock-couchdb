@@ -1,6 +1,7 @@
 var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('../../..');
+var status = mock.status;
 
 module.exports = function () {
   var server = mock.server();
@@ -16,7 +17,7 @@ module.exports = function () {
 
     request
       .get('_all_dbs')
-      .expect(200)
+      .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
@@ -37,7 +38,7 @@ module.exports = function () {
 
     request
       .get('_all_dbs')
-      .expect(200)
+      .expect(status.OK)
       .expect(function (res) {
         assert.equal(res.body.length, 15);
       })
@@ -49,7 +50,7 @@ module.exports = function () {
 
     request
       .get('_all_dbs')
-      .expect(200)
+      .expect(status.OK)
       .expect(function (res) {
         assert.deepEqual(res.body, [ '_users', '_replicator' ]);
       })

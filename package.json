@@ -13,6 +13,7 @@
     "chance": "^0.7.1",
     "extend": "^2.0.0",
     "extract": "^1.0.0",
+    "http-status": "^0.1.8",
     "nock": "^0.58.0"
   },
   "devDependencies": {

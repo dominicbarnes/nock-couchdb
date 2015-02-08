@@ -1,6 +1,7 @@
 var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('../../..');
+var status = mock.status;
 
 module.exports = function () {
   var server = mock.server();
@@ -16,7 +17,7 @@ module.exports = function () {
 
     request
       .get('_uuids')
-      .expect(200)
+      .expect(status.OK)
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
@@ -32,11 +33,11 @@ module.exports = function () {
   });
 
   it('should mock a failed request for too many uuids', function (done) {
-    server.uuids({ error: 403 });
+    server.uuids({ error: status.FORBIDDEN });
 
     request
       .get('_uuids')
-      .expect(403, {
+      .expect(status.FORBIDDEN, {
         error:  'forbidden',
         reason: 'count parameter too large'
       })

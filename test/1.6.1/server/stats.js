@@ -1,6 +1,7 @@
 var assert = require('assert');
 var supertest = require('supertest');
 var mock = require('../../..');
+var status = mock.status;
 
 module.exports = function () {
   var server = mock.server();
@@ -16,7 +17,7 @@ module.exports = function () {
 
     request
       .get('_stats')
-      .expect(200)
+      .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
@@ -66,7 +67,7 @@ module.exports = function () {
 
     request
       .get('_stats/httpd_request_methods/GET')
-      .expect(200)
+      .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
@@ -88,7 +89,7 @@ module.exports = function () {
 
     request
       .get('_stats/test/test')
-      .expect(200)
+      .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
@@ -114,12 +115,12 @@ module.exports = function () {
   it('should mock a failed request for a group only (missing key)', function (done) {
     server.stats({
       group: 'test',
-      error: 400
+      error: status.BAD_REQUEST
     });
 
     request
       .get('_stats/test')
-      .expect(400, {
+      .expect(status.BAD_REQUEST, {
         error:  'bad_request',
         reason: 'Stat names must have exactly two parts.'
       })

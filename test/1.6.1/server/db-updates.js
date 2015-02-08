@@ -20,6 +20,7 @@ module.exports = function () {
 
     request
       .get('_db_updates')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')

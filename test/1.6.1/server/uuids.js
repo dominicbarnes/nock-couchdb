@@ -17,6 +17,7 @@ module.exports = function () {
 
     request
       .get('_uuids')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
@@ -37,6 +38,7 @@ module.exports = function () {
 
     request
       .get('_uuids')
+      .set('Accept', 'application/json')
       .expect(status.FORBIDDEN, {
         error:  'forbidden',
         reason: 'count parameter too large'

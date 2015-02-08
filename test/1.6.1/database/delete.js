@@ -18,6 +18,7 @@ module.exports = function () {
 
     request
       .delete('')
+      .set('Accept', 'application/json')
       .expect(status.OK, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
@@ -32,6 +33,7 @@ module.exports = function () {
 
     request
       .delete('')
+      .set('Accept', 'application/json')
       .expect(status.BAD_REQUEST, {
         error:  'bad_request',
         reason: 'You tried to DELETE a database with a ?rev= parameter. Did you mean to DELETE a document instead?'
@@ -49,6 +51,7 @@ module.exports = function () {
 
     request
       .delete('')
+      .set('Accept', 'application/json')
       .expect(status.UNAUTHORIZED, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
@@ -66,6 +69,7 @@ module.exports = function () {
 
     request
       .delete('')
+      .set('Accept', 'application/json')
       .expect(status.NOT_FOUND, {
         error:  'not_found',
         reason: 'missing'

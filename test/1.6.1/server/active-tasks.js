@@ -17,6 +17,7 @@ module.exports = function () {
 
     request
       .get('_active_tasks')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
@@ -37,6 +38,7 @@ module.exports = function () {
 
     request
       .get('_active_tasks')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
         assert.equal(res.body.length, 15);

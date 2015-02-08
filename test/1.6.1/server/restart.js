@@ -17,6 +17,7 @@ module.exports = function () {
 
     request
       .post('_restart')
+      .set('Accept', 'application/json')
       .expect(status.ACCEPTED, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -30,6 +31,7 @@ module.exports = function () {
 
     request
       .post('_restart')
+      .set('Accept', 'application/json')
       .expect(status.FORBIDDEN, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
@@ -46,12 +48,12 @@ module.exports = function () {
 
     request
       .post('_restart')
-      .expect(status.UNSUPPORTED_MEDIA_TYPE, {
+      .expect(status.UNSUPPORTED_MEDIA_TYPE, JSON.stringify({
         error:  'bad_content_type',
         reason: 'Content-Type must be application/json'
-      })
+      }))
       .expect('Cache-Control', 'must-revalidate')
-      .expect('Content-Type', 'application/json')
+      .expect('Content-Type', 'text/plain; charset=utf-8')
       .expect('Date', server.options.date.toUTCString())
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);

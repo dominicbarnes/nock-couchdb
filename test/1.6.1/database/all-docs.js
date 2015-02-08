@@ -18,6 +18,7 @@ module.exports = function () {
 
     request
       .get('_all_docs')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
@@ -43,6 +44,7 @@ module.exports = function () {
 
     request
       .get('_all_docs')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
         var data = JSON.parse(res.text);
@@ -56,6 +58,7 @@ module.exports = function () {
 
     request
       .get('_all_docs')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
         var data = JSON.parse(res.text);
@@ -74,6 +77,7 @@ module.exports = function () {
 
     request
       .get('_all_docs')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
         var data = JSON.parse(res.text);

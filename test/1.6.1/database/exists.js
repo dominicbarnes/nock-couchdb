@@ -18,6 +18,7 @@ module.exports = function () {
 
     request
       .head('')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -31,6 +32,7 @@ module.exports = function () {
 
     request
       .head('')
+      .set('Accept', 'application/json')
       .expect(status.NOT_FOUND)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')

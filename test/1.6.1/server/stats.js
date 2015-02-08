@@ -17,6 +17,7 @@ module.exports = function () {
 
     request
       .get('_stats')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -67,6 +68,7 @@ module.exports = function () {
 
     request
       .get('_stats/httpd_request_methods/GET')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -89,6 +91,7 @@ module.exports = function () {
 
     request
       .get('_stats/test/test')
+      .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -120,6 +123,7 @@ module.exports = function () {
 
     request
       .get('_stats/test')
+      .set('Accept', 'application/json')
       .expect(status.BAD_REQUEST, {
         error:  'bad_request',
         reason: 'Stat names must have exactly two parts.'

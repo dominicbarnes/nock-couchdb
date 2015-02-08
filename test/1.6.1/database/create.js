@@ -18,6 +18,7 @@ module.exports = function () {
 
     request
       .put('')
+      .set('Accept', 'application/json')
       .expect(status.CREATED, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
@@ -32,6 +33,7 @@ module.exports = function () {
 
     request
       .put('')
+      .set('Accept', 'application/json')
       .expect(status.BAD_REQUEST, {
         error:  'illegal_database_name',
         reason: 'Name: \'test\'. Only lowercase characters (a-z), digits (0-9), and any of the characters _, $, (, ), +, -, and / are allowed. Must begin with a letter.'
@@ -49,6 +51,7 @@ module.exports = function () {
 
     request
       .put('')
+      .set('Accept', 'application/json')
       .expect(status.UNAUTHORIZED, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
@@ -66,6 +69,7 @@ module.exports = function () {
 
     request
       .put('')
+      .set('Accept', 'application/json')
       .expect(status.PRECONDITION_FAILED, {
         error:  'file_exists',
         reason: 'The database could not be created, the file already exists.'

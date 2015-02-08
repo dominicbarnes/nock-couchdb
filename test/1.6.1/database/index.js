@@ -6,4 +6,5 @@ module.exports = function () {
   describe('.delete([options])', require('./delete'));
   describe('.allDocs([options])', require('./all-docs'));
   describe('.compact([options])', require('./compact'));
+  describe('.ensureFullCommit([options])', require('./ensure-full-commit'));
 };

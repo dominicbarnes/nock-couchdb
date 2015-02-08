@@ -19,7 +19,7 @@ module.exports = function () {
       .get('_log')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
-      .expect('Content-Type', 'text/plain')
+      .expect('Content-Type', 'text/plain; charset=utf-8')
       .expect('Date', server.options.date.toUTCString())
       .expect('Transfer-Encoding', 'chunked')
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)

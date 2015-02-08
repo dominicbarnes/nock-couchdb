@@ -18,6 +18,7 @@ module.exports = function () {
     request
       .post('_restart')
       .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(status.ACCEPTED, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')
@@ -32,6 +33,7 @@ module.exports = function () {
     request
       .post('_restart')
       .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(status.FORBIDDEN, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
@@ -48,6 +50,7 @@ module.exports = function () {
 
     request
       .post('_restart')
+      .set('Accept', 'application/json')
       .expect(status.UNSUPPORTED_MEDIA_TYPE, JSON.stringify({
         error:  'bad_content_type',
         reason: 'Content-Type must be application/json'

@@ -7,6 +7,7 @@ module.exports = function () {
   var server = mock.server();
   var database = server.database('test');
   var request = supertest(database.url());
+  var version = server.options.version;
 
   afterEach(function () {
     server.done();
@@ -18,6 +19,11 @@ module.exports = function () {
     request
       .get('')
       .expect(status.OK)
+      .expect('Cache-Control', 'must-revalidate')
+      .expect('Content-Length', /^\d+$/)
+      .expect('Content-Type', 'application/json')
+      .expect('Date', server.options.date.toUTCString())
+      .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .expect(function (res) {
         var data = res.body;
         assert.equal(data.db_name, 'test');

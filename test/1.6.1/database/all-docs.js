@@ -22,11 +22,11 @@ module.exports = function () {
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
-      .expect('Content-Type', 'text/plain')
+      .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .expect(function (res) {
-        var data = JSON.parse(res.text);
+        var data = res.body;
         assert.equal(typeof data.offset, 'number');
         assert.equal(typeof data.total_rows, 'number');
         assert(Array.isArray(data.rows));
@@ -47,7 +47,7 @@ module.exports = function () {
       .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
-        var data = JSON.parse(res.text);
+        var data = res.body;
         assert.equal(data.offset, 15);
       })
       .end(done);
@@ -61,7 +61,7 @@ module.exports = function () {
       .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
-        var data = JSON.parse(res.text);
+        var data = res.body;
         var total = data.total_rows;
         var count = data.rows.length;
         var offset = data.offset;
@@ -80,7 +80,7 @@ module.exports = function () {
       .set('Accept', 'application/json')
       .expect(status.OK)
       .expect(function (res) {
-        var data = JSON.parse(res.text);
+        var data = res.body;
         var total = data.total_rows;
         var count = data.rows.length;
         var offset = data.offset;

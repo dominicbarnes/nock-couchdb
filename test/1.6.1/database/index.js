@@ -7,4 +7,5 @@ module.exports = function () {
   describe('.allDocs([options])', require('./all-docs'));
   describe('.compact([options])', require('./compact'));
   describe('.ensureFullCommit([options])', require('./ensure-full-commit'));
+  describe('.viewCleanup([options])', require('./view-cleanup'));
 };

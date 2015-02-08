@@ -13,7 +13,7 @@ module.exports = function () {
     server.done();
   });
 
-  it('should mock the root endpoint', function (done) {
+  it('should mock a successful request', function (done) {
     database.info();
 
     request

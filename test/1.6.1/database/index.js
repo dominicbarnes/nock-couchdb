@@ -4,4 +4,5 @@ module.exports = function () {
   describe('.exists([options])', require('./exists'));
   describe('.create([options])', require('./create'));
   describe('.delete([options])', require('./delete'));
+  describe('.allDocs([options])', require('./all-docs'));
 };

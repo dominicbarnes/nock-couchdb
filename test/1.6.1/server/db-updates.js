@@ -12,13 +12,13 @@ module.exports = function () {
   });
 
   it('should mock a successful longpoll request', function (done) {
-    server.dbChanges();
+    server.dbUpdates();
     var start = new Date();
 
     this.slow(1000);
 
     request
-      .get('_db_changes')
+      .get('_db_updates')
       .expect(200)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Type', 'application/json')

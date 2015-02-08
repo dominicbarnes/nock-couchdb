@@ -13,11 +13,27 @@ module.exports = function () {
     database.done();
   });
 
-  it('should mock a successful compaction', function (done) {
+  it('should mock a successful db compaction', function (done) {
     database.compact();
 
     request
       .post('_compact')
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .expect(status.ACCEPTED, { ok: true })
+      .expect('Cache-Control', 'must-revalidate')
+      .expect('Content-Length', /^\d+$/)
+      .expect('Content-Type', 'application/json')
+      .expect('Date', server.options.date.toUTCString())
+      .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+      .end(done);
+  });
+
+  it('should mock a successful ddoc compaction', function (done) {
+    database.compact({ ddoc: 'test' });
+
+    request
+      .post('_compact/test')
       .set('Accept', 'application/json')
       .set('Content-Type', 'application/json')
       .expect(status.ACCEPTED, { ok: true })
@@ -80,6 +96,47 @@ module.exports = function () {
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'text/plain; charset=utf-8')
+      .expect('Date', server.options.date.toUTCString())
+      .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+      .end(done);
+  });
+
+  it('should mock a failure due to missing db', function (done) {
+    database.compact({ error: status.NOT_FOUND });
+
+    request
+      .post('_compact')
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .expect(status.NOT_FOUND, {
+        error:  'not_found',
+        reason: 'no_db_file'
+      })
+      .expect('Cache-Control', 'must-revalidate')
+      .expect('Content-Length', /^\d+$/)
+      .expect('Content-Type', 'application/json')
+      .expect('Date', server.options.date.toUTCString())
+      .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+      .end(done);
+  });
+
+  it('should mock a failure due to missing ddoc', function (done) {
+    database.compact({
+      ddoc: 'test',
+      error: status.NOT_FOUND
+    });
+
+    request
+      .post('_compact/test')
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .expect(status.NOT_FOUND, {
+        error:  'not_found',
+        reason: 'missing'
+      })
+      .expect('Cache-Control', 'must-revalidate')
+      .expect('Content-Length', /^\d+$/)
+      .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);

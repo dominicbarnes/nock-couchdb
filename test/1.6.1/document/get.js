@@ -15,29 +15,59 @@ module.exports = function () {
   });
 
   it('should mock an existing document', function (done) {
-    document.exists();
+    document.get();
 
     request
-      .head('')
+      .get('')
       .set('Accept', 'application/json')
       .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
-      .expect('Etag', /^"\d+\-\w+"$/)
+      .expect('ETag', /^"\d+\-\w+"$/)
+      .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+      .expect(function (res) {
+        var data = res.body;
+        assert.equal(data._id, 'test');
+        assert.equal(typeof data._rev, 'string');
+      })
+      .end(done);
+  });
+
+  it('should include more data in the document', function (done) {
+    document.get({
+      rev: 'abc123',
+      body: {
+        'hello': 'world'
+      }
+    });
+
+    request
+      .get('')
+      .set('Accept', 'application/json')
+      .expect(status.OK, {
+        _id: 'test',
+        _rev: 'abc123',
+        hello: 'world'
+      })
+      .expect('Cache-Control', 'must-revalidate')
+      .expect('Content-Length', /^\d+$/)
+      .expect('Content-Type', 'application/json')
+      .expect('Date', server.options.date.toUTCString())
+      .expect('ETag', '"abc123"')
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);
   });
 
   it('should mock an unmodified document', function (done) {
-    document.exists({
+    document.get({
       error: status.NOT_MODIFIED,
-      etag:  'abc123'
+      rev:   'abc123'
     });
 
     request
-      .head('')
+      .get('')
       .set('Accept', 'application/json')
       .set('If-None-Match', '"abc123"')
       .expect(status.NOT_MODIFIED, '')
@@ -45,56 +75,67 @@ module.exports = function () {
       .expect('Content-Length', 0)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
-      .expect('Etag', '"abc123"')
+      .expect('ETag', '"abc123"')
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);
   });
 
   it('should mock a modified document (that was being checked)', function (done) {
-    document.exists({ etag: 'abc123' });
+    document.get({ rev: 'abc123' });
 
     request
-      .head('')
+      .get('')
       .set('Accept', 'application/json')
       .set('If-None-Match', '"abc123"')
-      .expect(status.OK, '')
+      .expect(status.OK)
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
-      .expect('Etag', '"abc123"')
+      .expect('ETag', '"abc123"')
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
+      .expect(function (res) {
+        var data = res.body;
+        assert.equal(data._id, 'test');
+        assert(data._rev);
+      })
       .end(done);
   });
 
   it('should mock a missing document', function (done) {
-    document.exists({ error: status.NOT_FOUND });
+    document.get({ error: status.NOT_FOUND });
 
     request
-      .head('')
+      .get('')
       .set('Accept', 'application/json')
-      .expect(status.NOT_FOUND)
+      .expect(status.NOT_FOUND, {
+        error:  'not_found',
+        reason: 'missing'
+      })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', 40)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
-      .expect('Etag', /^"\d+\-\w+"$/)
+      .expect('ETag', /^"\d+\-\w+"$/)
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);
   });
 
   it('should mock a failed request because of invalid credentials', function (done) {
-    document.exists({ error: status.UNAUTHORIZED });
+    document.get({ error: status.UNAUTHORIZED });
 
     request
-      .head('')
+      .get('')
       .set('Accept', 'application/json')
-      .expect(status.UNAUTHORIZED, '')
+      .expect(status.UNAUTHORIZED, {
+        error:  'unauthorized',
+        reason: 'You are not authorized to access this db.'
+      })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', 77)
       .expect('Content-Type', 'application/json')
       .expect('Date', server.options.date.toUTCString())
-      .expect('Etag', /^"\d+\-\w+"$/)
+      .expect('ETag', /^"\d+\-\w+"$/)
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);
   });

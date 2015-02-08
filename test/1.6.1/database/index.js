@@ -5,4 +5,5 @@ module.exports = function () {
   describe('.create([options])', require('./create'));
   describe('.delete([options])', require('./delete'));
   describe('.allDocs([options])', require('./all-docs'));
+  describe('.compact([options])', require('./compact'));
 };

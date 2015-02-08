@@ -10,7 +10,7 @@ module.exports = function () {
   var version = server.options.version;
 
   afterEach(function () {
-    server.done();
+    database.done();
   });
 
   it('should mock a successful request', function (done) {

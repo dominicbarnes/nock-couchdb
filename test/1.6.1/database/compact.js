@@ -13,13 +13,14 @@ module.exports = function () {
     database.done();
   });
 
-  it('should mock a successful delete', function (done) {
-    database.delete();
+  it('should mock a successful compaction', function (done) {
+    database.compact();
 
     request
-      .delete('')
+      .post('_compact')
       .set('Accept', 'application/json')
-      .expect(status.OK, { ok: true })
+      .set('Content-Type', 'application/json')
+      .expect(status.ACCEPTED, { ok: true })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
       .expect('Content-Type', 'application/json')
@@ -28,15 +29,16 @@ module.exports = function () {
       .end(done);
   });
 
-  it('should mock a failure because of added ?rev= param', function (done) {
-    database.delete({ error: status.BAD_REQUEST });
+  it('should mock a failure because of invalid name', function (done) {
+    database.compact({ error: status.BAD_REQUEST });
 
     request
-      .delete('')
+      .post('_compact')
       .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(status.BAD_REQUEST, {
-        error:  'bad_request',
-        reason: 'You tried to DELETE a database with a ?rev= parameter. Did you mean to DELETE a document instead?'
+        error:  'illegal_database_name',
+        reason: 'Name: \'test\'. Only lowercase characters (a-z), digits (0-9), and any of the characters _, $, (, ), +, -, and / are allowed. Must begin with a letter.'
       })
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
@@ -47,11 +49,12 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    database.delete({ error: status.UNAUTHORIZED });
+    database.compact({ error: status.UNAUTHORIZED });
 
     request
-      .delete('')
+      .post('_compact')
       .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
       .expect(status.UNAUTHORIZED, {
         error:  'unauthorized',
         reason: 'You are not a server admin.'
@@ -64,19 +67,19 @@ module.exports = function () {
       .end(done);
   });
 
-  it('should mock a failure because the database does not exist', function (done) {
-    database.delete({ error: status.NOT_FOUND });
+  it('should mock a failure because content type is invalid', function (done) {
+    database.compact({ error: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
-      .delete('')
+      .post('_compact')
       .set('Accept', 'application/json')
-      .expect(status.NOT_FOUND, {
-        error:  'not_found',
-        reason: 'missing'
-      })
+      .expect(status.UNSUPPORTED_MEDIA_TYPE, JSON.stringify({
+        error:  'bad_content_type',
+        reason: 'Content-Type must be application/json'
+      }))
       .expect('Cache-Control', 'must-revalidate')
       .expect('Content-Length', /^\d+$/)
-      .expect('Content-Type', 'application/json')
+      .expect('Content-Type', 'text/plain; charset=utf-8')
       .expect('Date', server.options.date.toUTCString())
       .expect('Server', `CouchDB/${version} (Erlang/OTP)`)
       .end(done);

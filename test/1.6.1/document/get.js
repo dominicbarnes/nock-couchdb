@@ -62,7 +62,7 @@ module.exports = function () {
 
   it('should mock an unmodified document', function (done) {
     document.get({
-      error: status.NOT_MODIFIED,
+      status: status.NOT_MODIFIED,
       rev:   'abc123'
     });
 
@@ -103,7 +103,7 @@ module.exports = function () {
   });
 
   it('should mock a missing document', function (done) {
-    document.get({ error: status.NOT_FOUND });
+    document.get({ status: status.NOT_FOUND });
 
     request
       .get('')
@@ -122,7 +122,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request because of invalid credentials', function (done) {
-    document.get({ error: status.UNAUTHORIZED });
+    document.get({ status: status.UNAUTHORIZED });
 
     request
       .get('')

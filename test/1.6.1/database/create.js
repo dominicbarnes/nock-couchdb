@@ -29,7 +29,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of invalid name', function (done) {
-    database.create({ error: status.BAD_REQUEST });
+    database.create({ status: status.BAD_REQUEST });
 
     request
       .put('')
@@ -47,7 +47,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    database.create({ error: status.UNAUTHORIZED });
+    database.create({ status: status.UNAUTHORIZED });
 
     request
       .put('')
@@ -65,7 +65,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because the database already exists', function (done) {
-    database.create({ error: status.PRECONDITION_FAILED });
+    database.create({ status: status.PRECONDITION_FAILED });
 
     request
       .put('')

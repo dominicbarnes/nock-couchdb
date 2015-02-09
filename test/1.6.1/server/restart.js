@@ -28,7 +28,7 @@ module.exports = function () {
   });
 
   it('should mock an authentication failure', function (done) {
-    server.restart({ error: status.FORBIDDEN });
+    server.restart({ status: status.FORBIDDEN });
 
     request
       .post('_restart')
@@ -46,7 +46,7 @@ module.exports = function () {
   });
 
   it('should mock a content-type failure', function (done) {
-    server.restart({ error: status.UNSUPPORTED_MEDIA_TYPE });
+    server.restart({ status: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
       .post('_restart')

@@ -80,7 +80,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request due to malformed data', function (done) {
-    document.save({ error: status.BAD_REQUEST });
+    document.save({ status: status.BAD_REQUEST });
 
     request
       .put('')
@@ -101,7 +101,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request due to malformed data', function (done) {
-    document.save({ error: status.UNAUTHORIZED });
+    document.save({ status: status.UNAUTHORIZED });
 
     request
       .put('')
@@ -122,7 +122,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request due to missing db', function (done) {
-    document.save({ error: status.NOT_FOUND });
+    document.save({ status: status.NOT_FOUND });
 
     request
       .put('')
@@ -143,7 +143,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request due to missing db', function (done) {
-    document.save({ error: status.CONFLICT });
+    document.save({ status: status.CONFLICT });
 
     request
       .put('')

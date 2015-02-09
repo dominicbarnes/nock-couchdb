@@ -32,7 +32,7 @@ module.exports = function () {
 
   it('should mock an unmodified document', function (done) {
     document.exists({
-      error: status.NOT_MODIFIED,
+      status: status.NOT_MODIFIED,
       etag:  'abc123'
     });
 
@@ -68,7 +68,7 @@ module.exports = function () {
   });
 
   it('should mock a missing document', function (done) {
-    document.exists({ error: status.NOT_FOUND });
+    document.exists({ status: status.NOT_FOUND });
 
     request
       .head('')
@@ -84,7 +84,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request because of invalid credentials', function (done) {
-    document.exists({ error: status.UNAUTHORIZED });
+    document.exists({ status: status.UNAUTHORIZED });
 
     request
       .head('')

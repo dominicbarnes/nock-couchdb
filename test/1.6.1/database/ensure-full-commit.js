@@ -35,7 +35,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of invalid name', function (done) {
-    database.ensureFullCommit({ error: status.BAD_REQUEST });
+    database.ensureFullCommit({ status: status.BAD_REQUEST });
 
     request
       .post('_ensure_full_commit')
@@ -54,7 +54,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because content type is invalid', function (done) {
-    database.ensureFullCommit({ error: status.UNSUPPORTED_MEDIA_TYPE });
+    database.ensureFullCommit({ status: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
       .post('_ensure_full_commit')
@@ -72,7 +72,7 @@ module.exports = function () {
   });
 
   it('should mock a failure due to missing db', function (done) {
-    database.ensureFullCommit({ error: status.NOT_FOUND });
+    database.ensureFullCommit({ status: status.NOT_FOUND });
 
     request
       .post('_ensure_full_commit')

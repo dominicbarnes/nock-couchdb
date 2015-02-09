@@ -36,7 +36,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of invalid rev', function (done) {
-    document.delete({ error: status.BAD_REQUEST });
+    document.delete({ status: status.BAD_REQUEST });
 
     request
       .delete('')
@@ -54,7 +54,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    document.delete({ error: status.UNAUTHORIZED });
+    document.delete({ status: status.UNAUTHORIZED });
 
     request
       .delete('')
@@ -72,7 +72,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because the database does not exist', function (done) {
-    document.delete({ error: status.NOT_FOUND });
+    document.delete({ status: status.NOT_FOUND });
 
     request
       .delete('')

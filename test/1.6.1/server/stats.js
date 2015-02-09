@@ -118,7 +118,7 @@ module.exports = function () {
   it('should mock a failed request for a group only (missing key)', function (done) {
     server.stats({
       group: 'test',
-      error: status.BAD_REQUEST
+      status: status.BAD_REQUEST
     });
 
     request

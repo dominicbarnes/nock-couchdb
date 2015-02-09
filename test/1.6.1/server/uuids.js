@@ -34,7 +34,7 @@ module.exports = function () {
   });
 
   it('should mock a failed request for too many uuids', function (done) {
-    server.uuids({ error: status.FORBIDDEN });
+    server.uuids({ status: status.FORBIDDEN });
 
     request
       .get('_uuids')

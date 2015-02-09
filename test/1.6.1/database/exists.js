@@ -28,7 +28,7 @@ module.exports = function () {
   });
 
   it('should mock a missing database', function (done) {
-    database.exists({ error: status.NOT_FOUND });
+    database.exists({ status: status.NOT_FOUND });
 
     request
       .head('')

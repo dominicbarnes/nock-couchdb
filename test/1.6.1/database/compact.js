@@ -46,7 +46,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of invalid name', function (done) {
-    database.compact({ error: status.BAD_REQUEST });
+    database.compact({ status: status.BAD_REQUEST });
 
     request
       .post('_compact')
@@ -65,7 +65,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    database.compact({ error: status.UNAUTHORIZED });
+    database.compact({ status: status.UNAUTHORIZED });
 
     request
       .post('_compact')
@@ -84,7 +84,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because content type is invalid', function (done) {
-    database.compact({ error: status.UNSUPPORTED_MEDIA_TYPE });
+    database.compact({ status: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
       .post('_compact')
@@ -102,7 +102,7 @@ module.exports = function () {
   });
 
   it('should mock a failure due to missing db', function (done) {
-    database.compact({ error: status.NOT_FOUND });
+    database.compact({ status: status.NOT_FOUND });
 
     request
       .post('_compact')
@@ -123,7 +123,7 @@ module.exports = function () {
   it('should mock a failure due to missing ddoc', function (done) {
     database.compact({
       ddoc: 'test',
-      error: status.NOT_FOUND
+      status: status.NOT_FOUND
     });
 
     request

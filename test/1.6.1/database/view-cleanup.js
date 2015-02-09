@@ -30,7 +30,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of invalid name', function (done) {
-    database.viewCleanup({ error: status.BAD_REQUEST });
+    database.viewCleanup({ status: status.BAD_REQUEST });
 
     request
       .post('_view_cleanup')
@@ -49,7 +49,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    database.viewCleanup({ error: status.UNAUTHORIZED });
+    database.viewCleanup({ status: status.UNAUTHORIZED });
 
     request
       .post('_view_cleanup')
@@ -68,7 +68,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because content type is invalid', function (done) {
-    database.viewCleanup({ error: status.UNSUPPORTED_MEDIA_TYPE });
+    database.viewCleanup({ status: status.UNSUPPORTED_MEDIA_TYPE });
 
     request
       .post('_view_cleanup')
@@ -86,7 +86,7 @@ module.exports = function () {
   });
 
   it('should mock a failure due to missing db', function (done) {
-    database.viewCleanup({ error: status.NOT_FOUND });
+    database.viewCleanup({ status: status.NOT_FOUND });
 
     request
       .post('_view_cleanup')

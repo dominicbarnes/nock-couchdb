@@ -29,7 +29,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of added ?rev= param', function (done) {
-    database.delete({ error: status.BAD_REQUEST });
+    database.delete({ status: status.BAD_REQUEST });
 
     request
       .delete('')
@@ -47,7 +47,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because of security restrictions', function (done) {
-    database.delete({ error: status.UNAUTHORIZED });
+    database.delete({ status: status.UNAUTHORIZED });
 
     request
       .delete('')
@@ -65,7 +65,7 @@ module.exports = function () {
   });
 
   it('should mock a failure because the database does not exist', function (done) {
-    database.delete({ error: status.NOT_FOUND });
+    database.delete({ status: status.NOT_FOUND });
 
     request
       .delete('')
